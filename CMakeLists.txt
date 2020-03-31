@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.8.0)
 project(cv)
 
-# WINDOWS
-if(WIN32)
-   set(VCPKG ${CMAKE_SOURCE_DIR}/_vcpkg)
-
+set(VCPKG ${CMAKE_SOURCE_DIR}/_vcpkg)
+if (WIN32)
    # install vcpkg
    if (NOT IS_DIRECTORY ${VCPKG})
       message("vcpkg does not exist. installing...")
@@ -25,9 +23,16 @@ if(WIN32)
          WORKING_DIRECTORY ${VCPKG}
       )
    endif()
+
+   # install xtensor:x64-windows
+   if (NOT IS_DIRECTORY ${VCPKG}/packages/xtensor_x64-windows)
+      execute_process(
+         COMMAND vcpkg install xtensor:x64-windows
+         WORKING_DIRECTORY ${VCPKG}
+      )
+   endif()
 endif()
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG}/scripts/buildsystems/vcpkg.cmake") 
 
 # cv
-find_package(OpenCV REQUIRED)
-add_executable(cv PUBLIC program.cpp)
-target_link_libraries(cv ${OpenCV_LIBS})
+add_executable(cv src/program.cpp)

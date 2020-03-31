@@ -1,3 +1,21 @@
+workspace "opencv"
+    configurations { "Debug", "Release" }
+
+project "cv"
+    kind "ConsoleApp"
+    language "C++"
+    targetdir "bin/%{cfg.buildcfgs}"
+
+    files { "src/**.h", "src/**.cpp" }
+
+    filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+
+    filter "configurations:Release"
+        defines { "NDEBUG" }
+        optimize "On"
+
 if os.ishost "windows" then
 
     -- Windows
@@ -16,7 +34,7 @@ if os.ishost "windows" then
         description = "Build the native library",
         execute = function ()
              os.execute "mkdir _build64 & pushd _build64 \z
- && cmake -G \"Visual Studio 15 2017 Win64\" -DBITNESS=\"x64\" ..\\ \z
+ && cmake -G \"Visual Studio 15 2017 Win64\" ..\\ \z
  && popd \z
  && cmake --build _build64 --config Debug"
         end
@@ -44,46 +62,6 @@ else
      }
      
 end
-
-newaction
-{
-    trigger     = "build",
-    description = "Build FreeTds.Net",
-    execute = function ()
-        os.execute "dotnet build FreeTds.Net/FreeTds.Net.csproj"
-    end
-}
-
-newaction
-{
-    trigger     = "test",
-    description = "Build and run all unit tests",
-    execute = function ()
-        -- os.execute "premake5 build"
-        os.execute "dotnet test FreeTds.Tests/FreeTds.Tests.csproj"
-    end
-}
-
-newaction
-{
-    trigger     = "pack",
-    description = "Package and run all unit tests",
-    execute = function ()
-        os.execute "dotnet pack FreeTds.Net/FreeTds.Net.csproj --output ../nupkgs --include-source"
-    end
-}
-
-newaction
-{
-    trigger     = "publish",
-    description = "Package and publish nuget package",
-    execute = function ()
-        apikey = os.getenv('NUGET_APIKEY')
-        os.execute "premake5 pack"
-        os.execute( "dotnet nuget push nupkgs/**/FreeTds.*.nupkg --api-key " .. apikey .. " --source https://api.nuget.org/v3/index.json" )
-    end
-}
-
 
 newaction
 {

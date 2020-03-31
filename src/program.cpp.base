@@ -1,3 +1,4 @@
+// https://rdmilligan.wordpress.com/2015/07/19/glyph-recognition-using-opencv-and-python/
 #include <opencv2/opencv.hpp>
 #include <iostream>
 
