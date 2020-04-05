@@ -24,7 +24,7 @@ if os.ishost "windows" then
         trigger     = "solution",
         description = "Open the solution",
         execute = function ()
-            os.execute "start FreeTds.Net.sln"
+            os.execute "start opencv.sln"
         end
     }
 
@@ -37,6 +37,24 @@ if os.ishost "windows" then
  && cmake -G \"Visual Studio 15 2017 Win64\" ..\\ \z
  && popd \z
  && cmake --build _build64 --config Debug"
+        end
+    }
+
+    newaction
+    {
+        trigger     = "install",
+        description = "Install Opencv",
+        execute = function ()
+             os.execute "cd _vcpkg && vcpkg integrate install"
+        end
+    }
+
+    newaction
+    {
+        trigger     = "uninstall",
+        description = "Uninstall Opencv",
+        execute = function ()
+             os.execute "cd _vcpkg && vcpkg integrate remove"
         end
     }
 
