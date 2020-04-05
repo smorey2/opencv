@@ -202,8 +202,8 @@ int main()
 			cv::approxPolyDP(contour, approx, 0.01*perimeter, true);
 			if (approx.size() != 4)
 				continue;
-			auto approx2 = xt::adapt(approx, shape);
-			getTopdownQuad(gray, warped, approx2);
+			//auto approx2 = xt::adapt(approx, shape);
+			//getTopdownQuad(gray, warped, approx2);
 
 			cv::Scalar color = cv::Scalar(_rng.uniform(0, 255), _rng.uniform(0, 255), _rng.uniform(0, 255));
 			cv::drawContours(drawing, contours, i, color, 2);
